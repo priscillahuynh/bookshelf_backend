@@ -1,8 +1,8 @@
 class Api::V1::BooksController < ApplicationController
-    before_action :set_shelf
+    before_action :book_scope
 
     def index
-        @books = @account.books
+        @books = book_scope.all
         render json: @books
     end
 
@@ -28,8 +28,13 @@ class Api::V1::BooksController < ApplicationController
 
     private 
 
-    def set_shelf
-        @shelf = Shelf.find(params[:shelf_id])
+    def book_scope
+        if params[:shelf_id].present?
+            @shelf = Shelf.find(params[:shelf_id])
+            @shelf.books
+        else 
+            Book
+        end
     end
 
     def book_params
