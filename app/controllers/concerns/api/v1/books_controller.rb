@@ -1,5 +1,4 @@
 class Api::V1::BooksController < ApplicationController
-    before_action :book_scope
 
     def index
         @books = book_scope.all
@@ -7,7 +6,7 @@ class Api::V1::BooksController < ApplicationController
     end
 
     def create
-        @book = Book.new(book_params)
+        @book = book_scope.new(book_params)
         if @book.save
             render json: @book 
         else
@@ -31,9 +30,9 @@ class Api::V1::BooksController < ApplicationController
     def book_scope
         if params[:shelf_id].present?
             @shelf = Shelf.find(params[:shelf_id])
-            @shelf.books
+            return @shelf.books
         else 
-            Book
+            return Book
         end
     end
 
