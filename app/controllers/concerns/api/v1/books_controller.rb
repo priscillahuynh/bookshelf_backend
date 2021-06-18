@@ -1,6 +1,7 @@
 class Api::V1::BooksController < ApplicationController
 
     def index
+        binding.pry
         @books = book_scope.all
         render json: @books
     end
@@ -8,7 +9,7 @@ class Api::V1::BooksController < ApplicationController
     def create
         @book = book_scope.new(book_params)
         if @book.save
-            render json: @book 
+            render json: @shelf 
         else
             render json: {error: "Error creating Book"}
         end
@@ -21,7 +22,9 @@ class Api::V1::BooksController < ApplicationController
 
     def destroy
         @book = Book.find(params[:id])
+        @shelf = Shelf.find(@book.shelf_id)
         @book.destroy
+        render json: @shelf
     end
 
 
