@@ -21,6 +21,14 @@ class Api::V1::ShelvesController < ApplicationController
     def destroy
         @shelf = Shelf.find(params[:id])
         @shelf.destroy
+        render json: @shelf
+    end
+
+    def update
+        @shelf = Shelf.find(params[:id])
+        @shelf.update(shelf_params)
+        @shelf.save
+        render json: @shelf
     end
 
     private
